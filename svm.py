@@ -114,7 +114,7 @@ datafile = 'Title+Body.csv'
 REPEAT = 30
 
 # 3) Output CSV file name
-out_csv_name = f'results/{project}_SVM.csv'
+out_csv_name = f'results/results.csv'
 
 # ========== Read and clean data ==========
 data = pd.read_csv(datafile).fillna('')
@@ -232,7 +232,7 @@ avg_score = np.mean(scores)
 
 final_time      = np.mean(time_values)
 
-print("=== SVM + TF-IDF Results ===")
+print(f"=== SVM + TF-IDF Results on {project} project ===")
 print(f"Number of repeats:     {REPEAT}")
 print(f"Average Accuracy:      {final_accuracy:.4f}")
 print(f"Average Precision:     {final_precision:.4f}")
@@ -252,7 +252,8 @@ except:
 
 df_log = pd.DataFrame(
     {
-        'Method': "SVM + f1 + TF-IDF",
+        'Method': "SVM + TF-IDF",
+        'Project': project,
         'repeated_times': [REPEAT],
         'Accuracy': [final_accuracy],
         'Precision': [final_precision],
