@@ -1,0 +1,25 @@
+Incorrect accuracy measure for padded target sequence in seq2seq model
+
+Hi,
+
+I used the basic character-level seq2seq model [example](https://github.com/keras-team/keras/blob/master/examples/lstm_seq2seq.py) for French-to-English translation.
+
+The accuracy measure seems to comparing the entire decoder output, i.e max_decoder_output_length.
+and I would like the accuracy to represent only the characters till first occurrence of the stop character ('\n' in this case) and not compare the predicted output to padded target output.
+
+For example:
+Consider the example that gives a 63 character long decoder sequence:
+
+i.e **decoder_target_output** is One Hot Representation of ( '' empty string represents a zero padded input vector)
+['C', 'o', 'u', 'r', 'e', 'z', '\xe2', '\x80', '\xaf', '!', '\n', '', '', '', '' '', '', '', '', '', '', '' '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '' '', '', '', '', '' '', '', '', '', '', '', '', '', '', '', '', '' '', '', '', '', '', '', '', '']
+
+after fitting, the **predicted_decoder_output** gives output using Argmax on One Hot Representation as
+
+['C', 'o', 'u', 'r', 'e', 'z', '\xe2', '\x80', '\xaf', '!', '\n', 'i', 'r', ' ', '?', '\n', 'i', 'l', '\xc3', '\xa9', ' ', '?', '\n', 'i', ' ', 'd', 'e', 'u', 's', ' ', 'c', 'o', 'u', 'r', 'e', '\xe2', '\x80', '\xaf', '!', '\n', '\n', '\n', ' ', '!', '\n', '\n', 'i', ' ', 'c', 'h', 'i', 'e', '\xe2', '\x80', '\xaf', '!', '\n', '\n', '\n', ' ', 'd', 'i', 'r', 'e'] 
+
+keras_accuracy = 11/63
+
+however, the relevant accuracy is = 11/11 as I don't need the model to consider accuracy for beyond the stop character.
+Is there a way to get correct accuracy by ignoring the padded output ?
+
+

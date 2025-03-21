@@ -1,0 +1,87 @@
+Model weights silently fail to load when model is on different gpu than when it was saved
+
+## 🐛 Bug
+
+<!-- A clear and concise description of what the bug is. -->
+ silently fails when the model is saved and loaded on different gpu-devices. As a result, the model remains in its randomly-initialized state.
+
+This does not occur in PyTorch 1.1 but does occur in PyTorch 1.2.
+ 
+## To Reproduce
+
+Steps to reproduce the behavior:
+
+The following code demonstrates this bug:
+
+1. Define functions for creating a simple model. For loading the model and asserting that its loaded weights reflect the weights in the checkpoint
+
+
+
+2. Create a model, place on gpu-0 and save its state-dictionary
+
+
+3. Demonstrate that the model loads as-expected on gpu-0
+
+
+4. Demonstrate that the model loads as-expected on cpu
+
+
+5. Demonstrate that the model **fails to load** on gpu-1, and retains its randomly-initialized weights.
+
+
+## Expected behavior
+
+<!-- A clear and concise description of what you expected to happen. -->
+
+## Environment
+
+Please copy and paste the output from our
+[environment collection script](https://raw.githubusercontent.com/pytorch/pytorch/master/torch/utils/collect_env.py)
+(or fill out the checklist below manually).
+
+You can get the script and run it with:
+
+
+PyTorch version: 1.2.0
+Is debug build: No
+CUDA used to build PyTorch: 10.0.130
+
+OS: Ubuntu 16.04.6 LTS
+GCC version: (Ubuntu 5.4.0-6ubuntu1~16.04.11) 5.4.0 20160609
+CMake version: version 3.5.1
+
+Python version: 3.7
+Is CUDA available: Yes
+CUDA runtime version: Could not collect
+GPU models and configuration: 
+GPU 0: Tesla V100-PCIE-16GB
+GPU 1: Tesla V100-PCIE-16GB
+GPU 2: Tesla V100-PCIE-16GB
+GPU 3: Tesla V100-PCIE-16GB
+GPU 4: Tesla V100-PCIE-16GB
+GPU 5: Tesla V100-PCIE-16GB
+GPU 6: Tesla V100-PCIE-16GB
+GPU 7: Tesla V100-PCIE-16GB
+
+Nvidia driver version: 418.67
+cuDNN version: /usr/lib/x86_64-linux-gnu/libcudnn.so.7.6.1
+
+Versions of relevant libraries:
+[pip] numpy==1.16.4
+[pip] torch==1.2.0
+[pip] torchvision==0.4.0a0+6b959ee
+[conda] blas                      1.0                         mkl  
+[conda] mkl                       2019.4                      243  
+[conda] mkl-service               2.0.2            py37h7b6447c_0  
+[conda] mkl_fft                   1.0.14           py37ha843d7b_0  
+[conda] mkl_random                1.0.2            py37hd81dba3_0  
+[conda] pytorch                   1.2.0           py3.7_cuda10.0.130_cudnn7.6.2_0    pytorch
+[conda] torchvision               0.4.0                    pypi_0    pypi
+:
+
+## Additional context
+
+<!-- Add any other context about the problem here. -->
+
+
+cc @ezyang @gchanan @zou3519
