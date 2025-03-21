@@ -1,6 +1,9 @@
-########## 1. Import required libraries and load models ##########
+'''
+This file contains the code for the classification tool that
+is based on the TF-IDF + SVM approach.
+'''
 
-import pandas as pd
+########## 1. Import required libraries and load models ##########
 import re
 import joblib
 import sys
@@ -91,20 +94,21 @@ else :
         data = lemmatize(data)
         data = clean_str(data)
 
-        # Text encoding
+        # TF-IDF vectorization
         report = tfidf.transform([data, ''])
 
         # Prediction of the class
         predicted_class = classifier.predict(report)[0]
 
-        print("\n----------------------------------------------------------------------------------")
-        print("                       --- CLASSIFICATION RESULT ---\n")
+        print("\n-------------------------------------------------------------------------\n")
         if predicted_class :
-            print("POSITIVE: The provided bug report is classified as a performance bug-related.\n")
+            print("        -----    CLASSIFICATION RESULT : POSITIVE    -----\n")
+            print(" The provided bug report is classified as performance bug-related.\n")
         else:
-            print("NEGATIVE: The provided bug report is not classified as a performance bug-related.\n")
+            print("          -----    CLASSIFICATION RESULT : NEGATIVE    -----\n")
+            print(" The provided bug report is not classified as performance bug-related.\n")
 
-        print("\n----------------------------------------------------------------------------------\n")
+        print("\n-------------------------------------------------------------------------\n")
 
     except FileNotFoundError: print("\n/!\ The file you provided was not found. /!\ \n")
 

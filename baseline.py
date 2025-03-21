@@ -1,3 +1,7 @@
+'''
+This file contains the code provided as a baseline for this project.
+'''
+
 ########## 1. Import required libraries ##########
 
 import pandas as pd

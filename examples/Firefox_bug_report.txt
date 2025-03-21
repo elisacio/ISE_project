@@ -1,0 +1,24 @@
+Significant Lag When Loading Pages with Heavy JavaScript in Firefox
+
+##   BUG
+
+Firefox exhibits noticeable lag and unresponsiveness when loading web pages with heavy JavaScript content. The issue is most apparent on pages with complex interactive elements, such as dashboards and modern web applications. This significantly impacts usability and browsing experience.
+Steps to Reproduce:
+
+## Expected Behavior:
+The page should load and become interactive within 2-3 seconds without any noticeable lag or freezing.
+
+## Actual Behavior:
+The page takes over 10 seconds to load, during which the browser becomes unresponsive. Interactions with page elements, such as clicking buttons or resizing widgets, are delayed by 2-3 seconds.
+
+## Environment:
+- Browser Version: Firefox 115.0 (64-bit)
+- Operating System: Windows 11
+- Hardware: Intel Core i5, 8GB RAM, SSD
+- Add-ons Enabled: uBlock Origin
+
+## Additional Notes:
+The issue appears to be related to the browser's JavaScript engine, as the same pages load and perform smoothly in other browsers (e.g., Chrome, Edge). Disabling all add-ons does not resolve the problem.
+
+## Suggested Fix:
+Optimize the JavaScript engine to handle heavy scripts more efficiently, and investigate potential memory usage issues during page load.

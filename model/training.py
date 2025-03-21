@@ -1,3 +1,8 @@
+'''
+This file contains the code that trains and saves the parameters for
+our the classification tool that is based on the TF-IDF + SVM approach.
+'''
+
 ########## 1. Import required libraries ##########
 
 import pandas as pd
@@ -80,9 +85,6 @@ def clean_str(string):
 
 
 ########## 3. Download & read data ##########
-import os
-import subprocess
-
 
 path = f'../datasets/*'
 file_path = glob.glob(path)
@@ -107,7 +109,6 @@ for i in file_path:
 
 
 ########## 4. Configure parameters & Start training ##########
-
 
 # Text cleaning
 for i in range (len(text)):

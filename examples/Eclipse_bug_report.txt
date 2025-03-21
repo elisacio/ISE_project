@@ -1,0 +1,23 @@
+Incorrect Syntax Highlighting for Java Annotations
+
+## 🐛  Bug
+The Eclipse IDE incorrectly highlights Java annotations when they are placed on method parameters. Instead of applying the correct syntax highlighting, the annotation text appears as plain text, making it difficult to distinguish annotations from other code elements.
+Steps to Reproduce:
+
+## Expected Behavior:
+The Java annotation should be highlighted using the appropriate syntax style (e.g., distinct color or formatting) to differentiate it from plain text.
+
+## Actual Behavior:
+The annotation appears as plain text, while other syntax elements are highlighted correctly.
+
+## Environment:
+- Eclipse Version: 2023-06 (4.26)
+- Java Version: OpenJDK 17
+- Operating System: Windows 11
+- Workspace Theme: Dark Mode
+
+## Additional Notes:
+This issue occurs regardless of the workspace theme (Light or Dark). The problem seems to be limited to annotations on method parameters; annotations on classes or methods are highlighted correctly.
+
+## Suggested Fix:
+Review and update the syntax highlighting rules in the Eclipse editor to ensure proper handling of Java annotations in all contexts.

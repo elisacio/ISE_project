@@ -1,3 +1,10 @@
+'''
+This file contains the code of the proposed approach which
+is based on TF-IDF and SVM methods.
+This file can be used to compare the performance of the
+proposed approach with the baseline.
+'''
+
 ########## 1. Import required libraries ##########
 
 import pandas as pd
