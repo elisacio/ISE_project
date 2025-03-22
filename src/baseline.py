@@ -71,8 +71,7 @@ def clean_str(string):
     return string.strip().lower()
 
 ########## 3. Download & read data ##########
-import os
-import subprocess
+
 # Choose the project (options: 'pytorch', 'tensorflow', 'keras', 'incubator-mxnet', 'caffe')
 project = 'pytorch'
 path = f'datasets/{project}.csv'
@@ -156,7 +155,7 @@ for repeated_time in range(REPEAT):
     X_train = tfidf.fit_transform(train_text)
     X_test = tfidf.transform(test_text)
    
-    # --- 4.3 Naive Bayes model & GridSearch ---
+    # --- 4.3 Naive Bayes models & GridSearch ---
     clf = GaussianNB()
     grid = GridSearchCV(
         clf,
@@ -167,7 +166,7 @@ for repeated_time in range(REPEAT):
 
     grid.fit(X_train.toarray(), y_train)
 
-    # Retrieve the best model
+    # Retrieve the best models
     best_clf = grid.best_estimator_
     best_clf.fit(X_train.toarray(), y_train)
 

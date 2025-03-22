@@ -14,10 +14,10 @@ nltk.download('wordnet')
 from nltk.stem import WordNetLemmatizer
 
 # Trained Vectorizer
-tfidf = joblib.load('model/vectorizer.pkl')
+tfidf = joblib.load('models/vectorizer.pkl')
 
 # Trained Classifier
-classifier = joblib.load('model/classifier.pkl')
+classifier = joblib.load('models/classifier.pkl')
 
 
 ########## 2. Define text preprocessing methods ##########

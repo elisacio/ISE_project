@@ -1,8 +1,6 @@
 '''
-This file contains the code of the proposed approach which
-is based on TF-IDF and SVM methods.
-This file can be used to compare the performance of the
-proposed approach with the baseline.
+This file contains the code that trains and saves the parameters for
+our the classification tool that is based on the TF-IDF + SVM approach.
 '''
 
 ########## 1. Import required libraries ##########
@@ -11,6 +9,8 @@ import pandas as pd
 import numpy as np
 import re
 import time
+import joblib
+import glob
 
 # Text and feature engineering
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -85,60 +85,39 @@ def clean_str(string):
 
 
 ########## 3. Download & read data ##########
-import os
-import subprocess
 
-# Choose the project (options: 'pytorch', 'tensorflow', 'keras', 'incubator-mxnet', 'caffe')
-project = 'pytorch'
-path = f'datasets/{project}.csv'
+path = f'../datasets/*'
+file_path = glob.glob(path)
 
-pd_all = pd.read_csv(path)
-pd_all = pd_all.sample(frac=1, random_state=999)  # Shuffle
+text = []
+sentiment = []
 
-# Merge Title and Body into a single column; if Body is NaN, use Title only
-pd_all['Title+Body'] = pd_all.apply(
-    lambda row: row['Title'] + '. ' + row['Body'] if pd.notna(row['Body']) else row['Title'],
-    axis=1
-)
+for i in file_path:
+    file_content = pd.read_csv(i)
+    titles = file_content['Title'].tolist()
+    bodies = file_content['Body'].tolist()
+    labels = file_content['Labels'].tolist()
+    comments = file_content['Comments'].tolist()
+    codes = file_content['Codes'].tolist()
+    commands = file_content['Commands'].tolist()
+    classes = file_content['class'].tolist()
 
-# Keep only necessary columns: id, Number, sentiment, text (merged Title+Body)
-pd_tplusb = pd_all.rename(columns={
-    "Unnamed: 0": "id",
-    "class": "sentiment",
-    "Title+Body": "text"
-})
-pd_tplusb.to_csv('Title+Body.csv', index=False, columns=["id", "Number", "sentiment", "text"])
+    for j in range(0, len(titles)):
+        content = (str(titles[j]) + str(bodies[j]))
+        text.append(content)
+        sentiment.append(classes[j])
 
 
 ########## 4. Configure parameters & Start training ##########
 
-# ========== Key Configurations ==========
-
-# 1) Data file to read
-datafile = 'Title+Body.csv'
-
-# 2) Number of repeated experiments
-REPEAT = 30
-
-# 3) Output CSV file name
-out_csv_name = f'results/results.csv'
-
-# ========== Read and clean data ==========
-data = pd.read_csv(datafile).fillna('')
-text_col = 'text'
-
-# Keep a copy for referencing original data if needed
-original_data = data.copy()
-
 # Text cleaning
-data[text_col] = data[text_col].apply(remove_html)
-data[text_col] = data[text_col].apply(remove_emoji)
-data[text_col] = data[text_col].apply(remove_urls)
-data[text_col] = data[text_col].replace(to_replace=r'[^\w\s]', value='', regex=True) #remove non-word and non-whitespace characters
-data[text_col] = data[text_col].apply(remove_stopwords)
-data[text_col] = data[text_col].apply(lemmatize)
-data[text_col] = data[text_col].apply(clean_str)
-
+for i in range (len(text)):
+    text[i] = remove_html(text[i])
+    text[i] = remove_emoji(text[i])
+    text[i] = remove_urls(text[i])
+    text[i] = remove_stopwords(text[i])
+    text[i] = lemmatize(text[i])
+    text[i] = clean_str(text[i])
 
 # Lists to store metrics across repeated runs
 accuracies = []
@@ -148,30 +127,31 @@ f1_scores = []
 auc_values = []
 time_values = []
 
+# 3) Output CSV file name
+out_csv_name = f'../results/training_results.csv'
+
+# Number of repeated experiments
+REPEAT = 1
+
 for repeated_time in range(REPEAT):
 
     # start measuring time
     t0 = time.time()
 
     # --- 4.1 Split into train/test ---
-    indices = np.arange(data.shape[0])
-    train_index, test_index = train_test_split(
-        indices, test_size=0.2, random_state=repeated_time
-    )
 
-    train_text = data[text_col].iloc[train_index]
-    test_text = data[text_col].iloc[test_index]
-
-    y_train = data['sentiment'].iloc[train_index]
-    y_test = data['sentiment'].iloc[test_index]
+    # using the train test split function
+    train_text, test_text, y_train, y_test = train_test_split(text, sentiment, test_size=0.2, random_state=repeated_time, shuffle=True)
 
     # --- 4.2 TF-IDF vectorization ---
     tfidf = TfidfVectorizer(
         ngram_range=(1, 2),
         max_features=1000  # Adjust as needed
     )
+
     X_train = tfidf.fit_transform(train_text)
 
+    joblib.dump(tfidf, '../models/vectorizer.pkl')
 
     X_test = tfidf.transform(test_text)
 
@@ -183,8 +163,9 @@ for repeated_time in range(REPEAT):
 
     grid = GridSearchCV(SVC(), param_grid, refit=True, scoring='f1')
 
-    # fitting the model for grid search
+    # fitting the models for grid search
     grid.fit(X_train, y_train)
+    joblib.dump(grid, '../models/classifier.pkl')
 
     # --- 4.4 Make predictions & evaluate ---
     y_pred = grid.predict(X_test.toarray())
@@ -240,7 +221,7 @@ avg_score = np.mean(scores)
 
 final_time      = np.mean(time_values)
 
-print(f"=== SVM + TF-IDF Results on {project} project ===")
+print(f"=== SVM + TF-IDF Results ===")
 print(f"Number of repeats:     {REPEAT}")
 print(f"Average Accuracy:      {final_accuracy:.4f}")
 print(f"Average Precision:     {final_precision:.4f}")
@@ -261,7 +242,6 @@ except:
 df_log = pd.DataFrame(
     {
         'Method': "SVM + TF-IDF",
-        'Project': project,
         'repeated_times': [REPEAT],
         'Accuracy': [final_accuracy],
         'Precision': [final_precision],
