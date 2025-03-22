@@ -78,7 +78,7 @@ def clean_str(string):
 ########## 3. Read the text file and classify it ##########
 
 if len(sys.argv) < 2:
-    print("\n/!\ Please provide the path of the text file you want to classify as the first argument in the command line. /!\ \n")
+    print("\n Please provide the path of the text file you want to classify as an argument in the command line. \n")
 
 else :
     try:
@@ -110,5 +110,5 @@ else :
 
         print("\n-------------------------------------------------------------------\n")
 
-    except FileNotFoundError: print("\n/!\ The file you provided was not found. /!\ \n")
+    except FileNotFoundError: print("\n The file you provided was not found.  \n")
 
