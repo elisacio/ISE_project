@@ -86,7 +86,7 @@ def clean_str(string):
 
 ########## 3. Download & read data ##########
 
-path = f'../datasets/*'
+path = f'datasets/*'
 file_path = glob.glob(path)
 
 text = []
@@ -96,10 +96,6 @@ for i in file_path:
     file_content = pd.read_csv(i)
     titles = file_content['Title'].tolist()
     bodies = file_content['Body'].tolist()
-    labels = file_content['Labels'].tolist()
-    comments = file_content['Comments'].tolist()
-    codes = file_content['Codes'].tolist()
-    commands = file_content['Commands'].tolist()
     classes = file_content['class'].tolist()
 
     for j in range(0, len(titles)):
@@ -128,7 +124,7 @@ auc_values = []
 time_values = []
 
 # 3) Output CSV file name
-out_csv_name = f'../results/training_results.csv'
+out_csv_name = f'results/training_results.csv'
 
 # Number of repeated experiments
 REPEAT = 1
@@ -151,7 +147,7 @@ for repeated_time in range(REPEAT):
 
     X_train = tfidf.fit_transform(train_text)
 
-    joblib.dump(tfidf, '../models/vectorizer.pkl')
+    joblib.dump(tfidf, 'models/vectorizer.pkl')
 
     X_test = tfidf.transform(test_text)
 
@@ -165,7 +161,7 @@ for repeated_time in range(REPEAT):
 
     # fitting the models for grid search
     grid.fit(X_train, y_train)
-    joblib.dump(grid, '../models/classifier.pkl')
+    joblib.dump(grid, 'models/classifier.pkl')
 
     # --- 4.4 Make predictions & evaluate ---
     y_pred = grid.predict(X_test.toarray())

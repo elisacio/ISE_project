@@ -100,15 +100,15 @@ else :
         # Prediction of the class
         predicted_class = classifier.predict(report)[0]
 
-        print("\n-------------------------------------------------------------------------\n")
+        print("\n-------------------------------------------------------------------\n")
         if predicted_class :
             print("        -----    CLASSIFICATION RESULT : POSITIVE    -----\n")
-            print(" The provided bug report is classified as performance bug-related.\n")
+            print(" The provided bug report is classified as performance-related.\n")
         else:
             print("          -----    CLASSIFICATION RESULT : NEGATIVE    -----\n")
-            print(" The provided bug report is not classified as performance bug-related.\n")
+            print(" The provided bug report is not classified as performance-related.\n")
 
-        print("\n-------------------------------------------------------------------------\n")
+        print("\n-------------------------------------------------------------------\n")
 
     except FileNotFoundError: print("\n/!\ The file you provided was not found. /!\ \n")
 

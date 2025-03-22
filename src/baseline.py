@@ -232,7 +232,7 @@ print(f"Average Precision:     {final_precision:.4f}")
 print(f"Average Recall:        {final_recall:.4f}")
 print(f"Average F1 score:      {final_f1:.4f}")
 print(f"Average AUC:           {final_auc:.4f}")
-print(f"Average scores:        {avg_score:.4f}")
+print(f"Average score:        {avg_score:.4f}")
 print(f"Average time:           {final_time:.4f}s")
 
 # Save final results to CSV (append mode)
