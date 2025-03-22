@@ -83,7 +83,6 @@ def clean_str(string):
     string = re.sub(r"\"", "", string)
     return string.strip().lower()
 
-
 ########## 3. Download & read data ##########
 
 # Choose the project (options: 'pytorch', 'tensorflow', 'keras', 'incubator-mxnet', 'caffe')
