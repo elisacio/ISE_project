@@ -4,7 +4,7 @@ import pandas as pd
 import ast  # To convert string lists to actual lists
 
 ##########  Download & read data ##########
-path = f'results/experiments2.csv'
+path = f'results/experiments.csv'
 data = pd.read_csv(path)
 data['CV_list(accuracy)'] = data['CV_list(accuracy)'].apply(ast.literal_eval)
 
