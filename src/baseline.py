@@ -255,6 +255,7 @@ df_log = pd.DataFrame(
         'AUC': [final_auc],
         'Average Score': [avg_score],
         'Time': [final_time],
+        'CV_list(accuracy)': [str(accuracies)],
         'CV_list(AUC)': [str(auc_values)]
     }
 )
